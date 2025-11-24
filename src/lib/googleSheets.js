@@ -1,6 +1,11 @@
 import { google } from "googleapis";
 
 export async function getSheetsClient() {
+  // Verificar que las variables de entorno estén configuradas
+  if (!process.env.GOOGLE_PROJECT_ID || !process.env.GOOGLE_PRIVATE_KEY || !process.env.GOOGLE_CLIENT_EMAIL) {
+    throw new Error("Google Sheets credentials not configured. Please set GOOGLE_PROJECT_ID, GOOGLE_PRIVATE_KEY, and GOOGLE_CLIENT_EMAIL environment variables.");
+  }
+
   const auth = new google.auth.GoogleAuth({
     credentials: {
       type: "service_account",
@@ -17,6 +22,10 @@ export async function getSheetsClient() {
 
 export async function addProfile(data) {
   try {
+    if (!process.env.GOOGLE_SHEETS_ID) {
+      throw new Error("GOOGLE_SHEETS_ID environment variable is not set");
+    }
+
     const sheets = await getSheetsClient();
     
     const row = [
@@ -51,6 +60,11 @@ export async function addProfile(data) {
 
 export async function getProfileById(id) {
   try {
+    if (!process.env.GOOGLE_SHEETS_ID) {
+      console.error("GOOGLE_SHEETS_ID environment variable is not set");
+      return null;
+    }
+
     const sheets = await getSheetsClient();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEETS_ID,
