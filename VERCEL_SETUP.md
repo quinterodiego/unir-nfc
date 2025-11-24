@@ -43,7 +43,19 @@ Asegúrate de que las variables estén configuradas para:
 - ✅ **Preview** (opcional, pero recomendado)
 - ✅ **Development** (opcional)
 
-### 6. Después de agregar las variables:
+### 6. Validar variables de entorno localmente (Recomendado):
+
+Antes de hacer deploy, puedes validar que todas las variables estén configuradas:
+
+```bash
+npm run validate-env
+```
+
+Este script verificará que todas las variables requeridas estén presentes y tengan el formato correcto.
+
+**Nota:** El script se ejecuta automáticamente antes de cada build (`npm run build`), por lo que si faltan variables, el build fallará con un mensaje claro.
+
+### 7. Después de agregar las variables:
 
 1. Ve a **Deployments**
 2. Click en los tres puntos (⋯) del último deployment
@@ -63,6 +75,17 @@ Asegúrate de que las variables estén configuradas para:
 
 ## Troubleshooting
 
+### Error DEPLOYMENT_NOT_FOUND:
+
+Este error ocurre cuando el deployment no existe porque el build falló. Sigue estos pasos:
+
+1. **Revisa los logs de build en Vercel Dashboard → Deployments**
+2. **Verifica que todas las variables de entorno estén configuradas** (usa `npm run validate-env` localmente)
+3. **Asegúrate de que las variables estén en los ambientes correctos** (Production, Preview, Development)
+4. **Haz un nuevo deployment** después de corregir los problemas
+
+Para más detalles, consulta `SOLUCION_DEPLOYMENT_NOT_FOUND.md`.
+
 ### Error 404:
 - Verifica que todas las variables de entorno estén configuradas
 - Verifica que `NEXT_PUBLIC_BASE_URL` tenga el dominio correcto
@@ -76,4 +99,9 @@ Asegúrate de que las variables estén configuradas para:
 ### Error al ver perfil:
 - Verifica que el ID del perfil exista en el Google Sheet
 - Revisa los logs de Vercel para ver el error específico
+
+### Build falla con "Variables de entorno faltantes":
+- Ejecuta `npm run validate-env` para ver qué variables faltan
+- Asegúrate de configurar todas las variables en Vercel Dashboard
+- Verifica que las variables estén configuradas para el ambiente correcto (Production/Preview/Development)
 
